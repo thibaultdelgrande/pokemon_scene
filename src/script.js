@@ -264,16 +264,18 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
     key.splice(key.indexOf(event.key), 1)
 })
+document.addEventListener('DOMContentLoaded', () => {
 
-document.querySelectorAll("#buttons button").forEach(bouton => {
-    bouton.addEventListener('mousedown', () => {
-        key.push(bouton.id)
-    })
+    document.querySelectorAll("#buttons button").forEach(bouton => {
+        bouton.addEventListener('touchstart', () => {
+            key.push(bouton.id)
+        })
 
-    bouton.addEventListener('mouseup', () => {
-        key.splice(key.indexOf(bouton.id), 1)
+        bouton.addEventListener('touchend', () => {
+            key.splice(key.indexOf(bouton.id), 1)
+        })
     })
-})
+});
 
 const vitesse = 5;
 const tailleCase = 1.45;

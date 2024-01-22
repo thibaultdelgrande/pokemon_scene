@@ -32,15 +32,15 @@ body
 #horizontal{
     display: flex;
     justify-content: space-between;
-    width: 15vh;
+    width: 60vw;
 }
 
 #buttons button{
-    height: 5vh;
-    width: 5vh;
+    height: 20vw;
+    width: 20vw;
 }
 
-@media (pointer: none) {
+@media (hover: none) {
     #buttons{
         display: flex;
     }
