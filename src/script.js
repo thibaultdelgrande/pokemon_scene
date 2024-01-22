@@ -1,8 +1,11 @@
 import * as THREE from 'three'
+import GUI from 'lil-gui';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+
+const gui = new GUI();
 
 // Charge le fichier audio theme.mp3
 const audio = new Audio('/sound/theme.mp3')
@@ -125,28 +128,65 @@ scene.add(ambientLight)
  */
 
 const collisionBoxes = [];
+const group = new THREE.Group();
+group.visible = false;
+scene.add(group);
+
+gui.add( group, 'visible').name("Afficher les boîtes de collision");
 
 const addCollisionBox = (x, z, width, height) => {
 
     const collisionBox = new THREE.Mesh(
         new THREE.BoxGeometry(width, 5, height),
         new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-        // Cacher la collision box
-        // new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0, depthWrite: false })
     )
     collisionBox.position.set(x, 0, z)
     collisionBoxes.push(collisionBox)
-    scene.add(collisionBox)
+
+    group.add(collisionBox);
 }
 
+// A côté du pont
+// Gauche
 addCollisionBox(4.5, -6, 6, 7)
+// Droite
 addCollisionBox(-7, -6, 8, 7)
+
+// En bas
 addCollisionBox(-2, -17, 20, 6)
+
+// Escaliers
 addCollisionBox(7, -12, 4, 4)
+
+// Droite de la plateforme du début
 addCollisionBox(-13, -12, 4, 4)
-addCollisionBox(0, 16, 10, 4)
+
+// Reshiram
+addCollisionBox(-1, 16, 12, 4)
+
+// Trou du petit pont
+// Droite
 addCollisionBox(-2, -5, 2, 2)
+// Gauche
 addCollisionBox(1, -5, 2, 2)
+
+// Zone de gauche
+// Globalité
+addCollisionBox(7, 5, 2, 15)
+// Milieu
+addCollisionBox(5, 6, 2, 4)
+// Haut
+addCollisionBox(5, 13, 2, 2)
+
+//Zone de droite
+// Globalité
+addCollisionBox(-8, 5, 2, 17)
+// Milieu
+addCollisionBox(-6, 4, 4, 4)
+// Bas
+addCollisionBox(-7, 2, 2, 2)
+// Haut
+addCollisionBox(-7, 9, 2, 2)
 
 /**
  * Sizes
@@ -223,6 +263,16 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
     key.splice(key.indexOf(event.key), 1)
+})
+
+document.querySelectorAll("#buttons button").forEach(bouton => {
+    bouton.addEventListener('mousedown', () => {
+        key.push(bouton.id)
+    })
+
+    bouton.addEventListener('mouseup', () => {
+        key.splice(key.indexOf(bouton.id), 1)
+    })
 })
 
 const vitesse = 5;
